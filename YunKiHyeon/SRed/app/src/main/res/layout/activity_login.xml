@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_marginBottom="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/LoginActivity_email"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/LoginActivity_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
+            android:id="@+id/LoginActivity_button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Login"
+            />
+        <Button
+
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
+            android:id="@+id/LoginActivity_button_signup"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_height="wrap_content"
+            android:text="SIGNIN"
+            />
+    </LinearLayout>
+
+    <Switch
+        android:layout_marginTop="20dp"
+        android:id="@+id/auto_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자동로그인" />
+
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:text="인증메일 재전송"
+        android:id="@+id/loginactivity_button_REverity"
+        android:padding="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
