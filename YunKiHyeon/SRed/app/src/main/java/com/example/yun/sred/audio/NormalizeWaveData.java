@@ -169,19 +169,5 @@ public class NormalizeWaveData {
 	public static byte[] normalizeWaveData(byte[] bs) {
 		return bs;
 	}
-	/*
-	public static byte[] normalizeWaveData(byte[] bs) {
-		byte[] result = new byte[bs.length];
-		for (int index = 0; index < bs.length / 2; index++) {
-			double d = convertToDouble(bs, index * 2);
-			convertFromDouble(normalize(d), result, index * 2);
-		}
-		return result;
-	}
-	private static double normalize(double d) {
-		double x = Math.abs(d);
-		if (x <= 0) return 0.0;
-		return Math.signum(d) * Math.sqrt(x);
-	}
-	*/
+
 }

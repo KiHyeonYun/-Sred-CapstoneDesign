@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -222,13 +221,18 @@ public class LoginActivity extends AppCompatActivity {
         final boolean result = false;
 
         //DB에서 user -> uid -> NewUser를 찾고 한번만 이벤트를 발생시켜서 데이터를 가지고옴.  singlevalueEvent로 해야 1번만 불러옴.
-        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("NewUser").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(user.getUid())
+                .child("NewUser")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "튜토리얼?  :  "+dataSnapshot.getValue());
 
                 if(dataSnapshot.getValue().equals("yes")) {
-                    Intent intent = new Intent(LoginActivity.this, tutorialActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RecordActivity.class);
                     startActivity(intent);
                     finish();
                 }

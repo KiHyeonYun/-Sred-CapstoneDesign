@@ -68,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 userModel.userName = name.getText().toString();
                                 userModel.NewUser = "yes";
                                 userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                userModel.recordNumber="0";
 
                                 //정보가 저장 된건가 확인 (지울꺼)
                                 Toast.makeText(SignUpActivity.this, userModel.NewUser, Toast.LENGTH_SHORT).show();
