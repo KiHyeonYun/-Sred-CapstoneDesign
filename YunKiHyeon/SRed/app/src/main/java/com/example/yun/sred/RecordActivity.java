@@ -152,48 +152,48 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-        saveDialog = createSaveDialog();
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveDialog.show();
-            }
-        });
+//        saveDialog = createSaveDialog();
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                saveDialog.show();
+//            }
+//        });
     }
     private void setInitializeState() {
         recordButton.setEnabled(true);
         playButton.setEnabled(true);
         stopButton.setEnabled(false);
-        saveButton.setEnabled(true);
+  //      saveButton.setEnabled(true);
     }
 
-    private AlertDialog createSaveDialog() {
-        final Handler handler = new Handler();
-        final View view = LayoutInflater.from(this).inflate(R.layout.save_dialog, null);
-        return new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_save_title)
-                .setView(view)
-                .setPositiveButton(R.string.dialog_save_button_save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText filename = (EditText) view.findViewById(R.id.filenameEditText);
-                        RadioButton wavRadio = (RadioButton) view.findViewById(R.id.wavRadio);
-
-                        boolean isWavFile = wavRadio.isChecked();
-                        final File file = new File(getSavePath(), filename.getText() + (isWavFile ? ".wav" : ".raw"));
-                        saveSoundFile(file, isWavFile);
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(RecordActivity.this, "Save completed: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton(R.string.dialog_save_button_cancel, null)
-                .create();
-    }
+//    private AlertDialog createSaveDialog() {
+//        final Handler handler = new Handler();
+//        final View view = LayoutInflater.from(this).inflate(R.layout.save_dialog, null);
+//        return new AlertDialog.Builder(this)
+//                .setTitle(R.string.dialog_save_title)
+//                .setView(view)
+//                .setPositiveButton(R.string.dialog_save_button_save, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        EditText filename = (EditText) view.findViewById(R.id.filenameEditText);
+//                        RadioButton wavRadio = (RadioButton) view.findViewById(R.id.wavRadio);
+//
+//                        boolean isWavFile = wavRadio.isChecked();
+//                        final File file = new File(getSavePath(), filename.getText() + (isWavFile ? ".wav" : ".raw"));
+//                        saveSoundFile(file, isWavFile);
+//
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(RecordActivity.this, "Save completed: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                })
+//                .setNegativeButton(R.string.dialog_save_button_cancel, null)
+//                .create();
+//    }
 
     private boolean saveSoundFile(File savefile, boolean isWavFile) {
 
@@ -249,6 +249,12 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Object recordNumber = dataSnapshot.getValue();
+
+                        if(Integer.parseInt(recordNumber.toString()) >= 3){
+                            Intent intent = new Intent(RecordActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
 
                         Toast.makeText(RecordActivity.this,recordNumber.toString(),Toast.LENGTH_LONG).show();
                         final File file = new File(getSavePath(), "0"+ recordNumber.toString()+ ".wav");
