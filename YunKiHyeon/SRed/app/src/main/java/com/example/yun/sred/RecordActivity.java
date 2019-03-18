@@ -206,6 +206,8 @@ public class RecordActivity extends AppCompatActivity {
         try {
             savefile.createNewFile();
             FileOutputStream targetStream = new FileOutputStream(savefile);
+
+
             try {
                 if (isWavFile) {
                     WaveFileHeaderCreator.pushWaveHeader(targetStream, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING, data.length);
