@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioFormat;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,8 @@ import com.example.yun.sred.audio.NormalizeWaveData;
 import com.example.yun.sred.audio.StopableTask;
 import com.example.yun.sred.audio.WaveDisplayView;
 import com.example.yun.sred.audio.WaveFileHeaderCreator;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,6 +69,7 @@ public class RecordActivity extends AppCompatActivity {
     private Button stopButton;
     private Button saveButton;
 
+    private  Object recordNumber;
     private FirebaseAuth FirebaseAuth;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mdatabase = FirebaseDatabase.getInstance().getReference();
@@ -152,13 +158,6 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-//        saveDialog = createSaveDialog();
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                saveDialog.show();
-//            }
-//        });
     }
     private void setInitializeState() {
         recordButton.setEnabled(true);
@@ -167,36 +166,11 @@ public class RecordActivity extends AppCompatActivity {
   //      saveButton.setEnabled(true);
     }
 
-//    private AlertDialog createSaveDialog() {
-//        final Handler handler = new Handler();
-//        final View view = LayoutInflater.from(this).inflate(R.layout.save_dialog, null);
-//        return new AlertDialog.Builder(this)
-//                .setTitle(R.string.dialog_save_title)
-//                .setView(view)
-//                .setPositiveButton(R.string.dialog_save_button_save, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        EditText filename = (EditText) view.findViewById(R.id.filenameEditText);
-//                        RadioButton wavRadio = (RadioButton) view.findViewById(R.id.wavRadio);
-//
-//                        boolean isWavFile = wavRadio.isChecked();
-//                        final File file = new File(getSavePath(), filename.getText() + (isWavFile ? ".wav" : ".raw"));
-//                        saveSoundFile(file, isWavFile);
-//
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(RecordActivity.this, "Save completed: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                })
-//                .setNegativeButton(R.string.dialog_save_button_cancel, null)
-//                .create();
-//    }
-
     private boolean saveSoundFile(File savefile, boolean isWavFile) {
 
+        Uri file;
+        StorageReference wavRef;
+        UploadTask uploadTask;
         byte[] data = displayView.getAllWaveData();
         if (data.length == 0) {
             Log.w(TAG, "save data is not found.");
@@ -206,24 +180,38 @@ public class RecordActivity extends AppCompatActivity {
         try {
             savefile.createNewFile();
             FileOutputStream targetStream = new FileOutputStream(savefile);
-
-
             try {
                 if (isWavFile) {
                     WaveFileHeaderCreator.pushWaveHeader(targetStream, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING, data.length);
                 }
                 targetStream.write(data);
 
+
             } finally {
                 if (targetStream != null) {
                     targetStream.close();
                 }
             }
+            file = Uri.fromFile(new File(getSavePath()+"/0"+ recordNumber.toString()+ ".wav"));
+            wavRef = storageRef.child(user.getUid()+"/"+file.getLastPathSegment());
+            uploadTask = wavRef.putFile(file);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(RecordActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(RecordActivity.this,"FileUpload Success",Toast.LENGTH_SHORT).show();
+                }
+            });
             return true;
         } catch (IOException ex) {
             Log.w(TAG, "Fail to save sound file.", ex);
             return false;
         }
+
     }
 
 
@@ -250,7 +238,7 @@ public class RecordActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Object recordNumber = dataSnapshot.getValue();
+                        recordNumber = dataSnapshot.getValue();
 
                         if(Integer.parseInt(recordNumber.toString()) >= 3){
                             Intent intent = new Intent(RecordActivity.this, MainActivity.class);
