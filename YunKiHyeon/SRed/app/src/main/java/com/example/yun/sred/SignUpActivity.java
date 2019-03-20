@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.yun.sred.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,12 +26,14 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText email, password, name, confirm_password;
     private DatabaseReference databaseReference;
-    private Button signup_user;
+    private BootstrapButton signup_user;
     private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
+
         setContentView(R.layout.activity_sign_up);
         setTitle("회원가입");
 
@@ -39,19 +43,19 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.signupActivity_password);
         confirm_password = (EditText) findViewById(R.id.signupActivity_password2);
         name = (EditText) findViewById(R.id.signupActivity_name);
-        signup_user = (Button) findViewById(R.id.signupActivity_button_signup);
+        signup_user = (BootstrapButton) findViewById(R.id.signupActivity_button_signup);
         signup_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (email.getText().toString() == null || name.getText().toString() == null || password.getText().toString() == null) {
-                    if (!password.getText().toString().equals(confirm_password.getText().toString())) {
-                        Toast.makeText(SignUpActivity.this, "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
-                    }
+                if (email.getText().toString().equals(null) || name.getText().toString().equals(null) || password.getText().toString().equals(null)) {
                     Toast.makeText(SignUpActivity.this, "빈칸없이 채워주세요.", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                if (!password.getText().toString().equals(confirm_password.getText().toString())) {
+                    Toast.makeText(SignUpActivity.this, "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
@@ -66,12 +70,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 UserModel userModel = new UserModel();
                                 userModel.userName = name.getText().toString();
-                                userModel.NewUser = "yes";
                                 userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 userModel.recordNumber="0";
-
-                                //정보가 저장 된건가 확인 (지울꺼)
-                                Toast.makeText(SignUpActivity.this, userModel.NewUser, Toast.LENGTH_SHORT).show();
+                                userModel.NewUser="yes";
+                                userModel.learning = "false";
 
                                 FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
 
@@ -80,6 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         Toast.makeText(SignUpActivity.this, "메일인증을 하시면 가입이 완료됩니다.", Toast.LENGTH_LONG).show();
                                         user = mAuth.getCurrentUser();
                                         sendEmailVerification();
+
                                     }
 
                                 });

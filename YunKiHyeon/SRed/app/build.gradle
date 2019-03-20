@@ -30,8 +30,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:design:27.1.1'
     implementation 'org.kie.modules:org-apache-commons-math:6.5.0.Final'
-    implementation 'gun0912.ted:tedpermission:2.0.0'
-
+    implementation 'com.beardedhen:androidbootstrap:2.3.2'
 
 }
 

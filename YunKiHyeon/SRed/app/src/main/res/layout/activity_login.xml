@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -10,7 +12,7 @@
         android:layout_marginBottom="20dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@drawable/main_logo" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="200dp"
@@ -45,24 +47,27 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@android:color/white"
-            android:id="@+id/LoginActivity_button_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="Login"
-            />
-        <Button
 
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@android:color/white"
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/LoginActivity_button_login"
+            style="@style/wrapping_button"
+            android:text="Sign In"
+            app:bootstrapBrand="primary"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            app:roundedCorners="false"
+            app:bootstrapSize="lg"
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/LoginActivity_button_signup"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_height="wrap_content"
-            android:text="SIGNIN"
+            style="@style/wrapping_button"
+            android:text="Sign Up"
+            app:bootstrapBrand="primary"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            app:roundedCorners="false"
+            app:bootstrapSize="lg"
             />
     </LinearLayout>
 
@@ -73,15 +78,15 @@
         android:layout_height="wrap_content"
         android:text="자동로그인" />
 
-
-    <Button
-        android:layout_marginTop="10dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:text="인증메일 재전송"
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/loginactivity_button_REverity"
-        android:padding="3dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        style="@style/wrapping_button"
+        android:text="재전송"
+        app:bootstrapBrand="success"
+        app:buttonMode="regular"
+        app:showOutline="false"
+        app:roundedCorners="false"
+        app:bootstrapSize="lg"
+        />
 
 </LinearLayout>

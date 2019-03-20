@@ -10,20 +10,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private Intent i;
     private TextView tv;
-    private Button tts_butt;
+    private BootstrapButton stt_butt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
+
         setContentView(R.layout.activity_main);
 
-        tv = findViewById(R.id.TTS_text);
-        tts_butt = findViewById(R.id.TTS_button);
+        tv = findViewById(R.id.STT_text);
+        stt_butt = findViewById(R.id.STT_button);
 
         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         final SpeechRecognizer mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mRecognizer.setRecognitionListener(listener);
 
-        tts_butt.setOnClickListener(new View.OnClickListener() {
+        stt_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRecognizer.startListening(i);

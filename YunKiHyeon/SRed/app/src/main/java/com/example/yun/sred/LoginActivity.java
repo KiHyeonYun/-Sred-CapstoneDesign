@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Switch autoLogin;
     private EditText email_et, password_et;
-    private Button login_button, signin_button,re_verify;
+    private BootstrapButton login_button, signin_button,re_verify;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_login);
 
         autoLogin = findViewById(R.id.auto_login);
@@ -52,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         login_button = findViewById(R.id.LoginActivity_button_login);
         signin_button = findViewById(R.id.LoginActivity_button_signup);
         re_verify = findViewById(R.id.loginactivity_button_REverity);
+        re_verify.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,14 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                         if(autoLogin.isChecked()){
                             Toast.makeText(getApplicationContext(),user.getDisplayName()+"님 환영합니다.",Toast.LENGTH_SHORT).show();
                             tutorialCheck();
-                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            //startActivity(intent);
-                            finish();
                         }
                     }
-                    else {
-
-                    }
+                    else { }
                 }
             }
         };
@@ -145,9 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                                     if (user != null) {
                                         if (user.isEmailVerified() == true) {
                                             Toast.makeText(getApplicationContext(),user.getDisplayName()+"님 환영합니다.",Toast.LENGTH_SHORT).show();
-
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
                                             //작업중
                                             tutorialCheck();
 
@@ -232,14 +228,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "튜토리얼?  :  "+dataSnapshot.getValue());
 
                 if(dataSnapshot.getValue().equals("yes")) {
-                    Intent intent = new Intent(LoginActivity.this, RecordActivity.class);
-                    startActivity(intent);
+                    Intent intent_r = new Intent(LoginActivity.this, RecordActivity.class);
+                    startActivity(intent_r);
                     finish();
                 }
 
                 else if(dataSnapshot.getValue().equals("no")){
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        Intent intent_m = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent_m);
                         finish();
                 }
             }

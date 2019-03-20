@@ -11,16 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import java.util.ArrayList;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 
 public class SplashActivity extends AppCompatActivity {
     private final int PERMISSIONS_REQUEST_RESULT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
+
         setContentView(R.layout.activity_splash);
 
         final int PERMISSION = 1;

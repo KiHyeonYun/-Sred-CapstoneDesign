@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.yun.sred.audio.AudioPlayTask;
 import com.example.yun.sred.audio.MicRecordTask;
 import com.example.yun.sred.audio.NormalizeWaveData;
@@ -64,10 +66,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private WaveDisplayView displayView;
     private ProgressBar progressBar;
-    private Button recordButton;
-    private Button playButton;
-    private Button stopButton;
-    private Button saveButton;
+    private BootstrapButton recordButton, playButton, stopButton, saveButton;
 
     private  Object recordNumber;
     private FirebaseAuth FirebaseAuth;
@@ -80,6 +79,8 @@ public class RecordActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
+
         setContentView(R.layout.activity_record);
 
         Log.d(TAG, "Start.");
@@ -88,10 +89,10 @@ public class RecordActivity extends AppCompatActivity {
         displayLayout.addView(displayView);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        recordButton = (Button) findViewById(R.id.Record);
-        playButton = (Button) findViewById(R.id.Play);
-        stopButton = (Button) findViewById(R.id.Stop);
-        saveButton = (Button) findViewById(R.id.Save);
+        recordButton = (BootstrapButton) findViewById(R.id.Record);
+        playButton = (BootstrapButton) findViewById(R.id.Play);
+        stopButton = (BootstrapButton) findViewById(R.id.Stop);
+        saveButton = (BootstrapButton) findViewById(R.id.Save);
 
         configureEvnetListener();
         setInitializeState();
@@ -240,7 +241,10 @@ public class RecordActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         recordNumber = dataSnapshot.getValue();
 
-                        if(Integer.parseInt(recordNumber.toString()) >= 3){
+                        if(Integer.parseInt(recordNumber.toString()) > 3){
+                            mdatabase.child("users").child(user.getUid()).child("learning").setValue("true");
+                            mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("no");
+
                             Intent intent = new Intent(RecordActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
