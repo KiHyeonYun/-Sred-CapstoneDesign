@@ -1,1 +1,0 @@
-해당 2개의 PNG 파일은 wav 파일을 Python 코드를 이용해서 spectrogram으로 나타낸 예시 사진입니다.
