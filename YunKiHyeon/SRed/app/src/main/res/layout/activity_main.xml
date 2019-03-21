@@ -16,11 +16,30 @@
         style="@style/wrapping_fa_text"
         app:bootstrapBrand="info"
         />
+
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/STT_button"
         style="@style/wrapping_button"
+        android:layout_margin="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:padding="0dp"
         android:text="R U N"
         app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/aiSpeaker"
+        style="@style/wrapping_button"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="0dp"
+        android:padding="0dp"
+        android:text="OFF"
+        app:bootstrapBrand="danger"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
         app:roundedCorners="true"

@@ -243,7 +243,7 @@ public class RecordActivity extends AppCompatActivity {
 
                         if(Integer.parseInt(recordNumber.toString()) > 3){
                             mdatabase.child("users").child(user.getUid()).child("learning").setValue("true");
-                            mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("no");
+                            mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("No");
 
                             Intent intent = new Intent(RecordActivity.this, MainActivity.class);
                             startActivity(intent);

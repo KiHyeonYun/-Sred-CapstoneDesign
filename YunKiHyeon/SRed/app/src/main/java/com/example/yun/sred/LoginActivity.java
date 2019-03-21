@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseDialog {
 
     private static final String TAG = "LoginActivity";
 
@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressDialog();
                 loginEvent();
             }
         });
@@ -200,9 +201,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(authStateListener);
+        hideProgressDialog();
     }
     //자동로그인값 확인
     private void autologin(){
+        showProgressDialog();
         if(mPref.getString("switch", "").equals("1")) {
             autoLogin.setChecked(true);
             Log.d("setting", "true");
@@ -233,7 +236,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
 
-                else if(dataSnapshot.getValue().equals("no")){
+                else if(dataSnapshot.getValue().equals("No")){
                         Intent intent_m = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent_m);
                         finish();
