@@ -73,6 +73,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 userModel.recordNumber="0";
                                 userModel.NewUser="yes";
+                                userModel.result ="";
+                                userModel.using="false";
                                 userModel.learning = "false";
 
                                 FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -7,6 +7,8 @@ public class UserModel {
     public String uid;
     public String recordNumber;
     public String learning;
+    public String using;
+    public String result;
     public String NewUser;
 
 }

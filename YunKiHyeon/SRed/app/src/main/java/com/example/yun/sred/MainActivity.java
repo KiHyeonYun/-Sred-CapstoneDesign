@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseDialog {
     private static final String TAG = "VoiceChangerSample";
 
     private static final int SAMPLE_RATE = 8000;
@@ -93,12 +93,43 @@ public class MainActivity extends AppCompatActivity {
         //  stt_butt = findViewById(R.id.STT_button);
         record_butt = findViewById(R.id.Record_button);
         stop_butt = findViewById(R.id.stop_butt);
-
+        aiSpeaker_butt=findViewById(R.id.aiSpeaker);
         progressBar = (ProgressBar) findViewById(R.id.progressBarMain);
         displayView = new WaveDisplayView(getBaseContext());
 
-        //   aiSpeaker_butt = findViewById(R.id.aiSpeaker);
-      //  stt_butt.setVisibility(View.INVISIBLE);
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                tts.setLanguage(Locale.KOREAN);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("result")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        result = dataSnapshot.getValue();
+                        hideProgressDialog();
+
+                        tts.setPitch(1.0f);
+                        tv.setText(result.toString());
+
+
+                        if (!result.toString().equals("")&&aispeaker == true)
+                            //tts.speak("클로바 "+tv.getText().toString(),TextToSpeech.QUEUE_FLUSH,null);
+                            tts.speak("OK 구글     \n\n\n" + result.toString(), TextToSpeech.QUEUE_FLUSH, null);
+                        else
+                           // tts.speak(tv.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                        tts.speak(result.toString(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        hideProgressDialog();
+                    }
+                });
+
+
+        //  stt_butt.setVisibility(View.INVISIBLE);
 
         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -106,26 +137,19 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
         i.putExtra("android.speech.extra.GET_AUDIO", true);
 
-//        aiSpeaker_butt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (aispeaker == false) {
-//                    aispeaker = true;
-//                    aiSpeaker_butt.setText("ON");
-//
-//                } else if (aispeaker == true) {
-//                    aispeaker = false;
-//                    aiSpeaker_butt.setText("OFF");
-//                }
-//            }
-//        });
+        aiSpeaker_butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (aispeaker == false) {
+                    aispeaker = true;
+                    aiSpeaker_butt.setText("AI Speaker On");
 
-//        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-//            @Override
-//            public void onInit(int status) {
-//                tts.setLanguage(Locale.KOREAN);
-//            }
-//        });
+                } else if (aispeaker == true) {
+                    aispeaker = false;
+                    aiSpeaker_butt.setText("AI Speaker OFF");
+                }
+            }
+        });
         RecognitionListener listener = new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
@@ -150,31 +174,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onEndOfSpeech() {
-
-                stt_butt.setVisibility(View.VISIBLE);
-                FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("result")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                result = dataSnapshot.getValue();
-                                mdatabase.child("users").child(user.getUid()).child("result").setValue("NULL");
-                                tv.setText(result.toString());
-
-                                tts.setPitch(1.0f);
-                                if (aispeaker == true)
-                                    //tts.speak("클로바 "+tv.getText().toString(),TextToSpeech.QUEUE_FLUSH,null);
-                                    tts.speak("클로바 " + result.toString(), TextToSpeech.QUEUE_FLUSH, null);
-                                else
-                                    tts.speak(tv.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                                tts.speak(result.toString(), TextToSpeech.QUEUE_FLUSH, null);
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-
             }
 
             @Override
@@ -311,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
             record_butt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    tv.setText("\"Listening...\"");
                     startRecording();
                 }
             });
@@ -371,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
                                 .child("users")
                                 .child(user.getUid())
                                 .child("using").setValue("true");
+                        mdatabase.child("users").child(user.getUid()).child("result").setValue("");
                         Toast.makeText(MainActivity.this, "FileUpload Success", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -388,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
             setButtonEnable(true);
             try {
                 recordTask = new MicRecordTask(progressBar, displayView, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING);
-                recordTask.setMax(10 * getDataBytesPerSecond(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING));
+                recordTask.setMax(4 * getDataBytesPerSecond(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING));
             } catch (IllegalArgumentException ex) {
                 Log.w(TAG, "Fail to create MicRecordTask.", ex);
             }
@@ -398,8 +399,10 @@ public class MainActivity extends AppCompatActivity {
 
         private void stopRecording () {
             stopTask(recordTask);
+            tv.setText("");
+            showProgressDialog();
 
-                            final File file = new File(getSavePath(), "using" + ".wav");
+            final File file = new File(getSavePath(), "using" + ".wav");
                             saveSoundFile(file, true);
 
             Log.i(TAG, "stop recording.");

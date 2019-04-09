@@ -152,6 +152,7 @@ public class LoginActivity extends BaseDialog {
                                         } else if (user.isEmailVerified() == false) {
                                             Toast.makeText(LoginActivity.this, "E-mail 인증해주세요!", Toast.LENGTH_SHORT).show();
                                             re_verify.setVisibility(View.VISIBLE);
+
                                         }
                                     }
                                 }
@@ -205,9 +206,9 @@ public class LoginActivity extends BaseDialog {
     }
     //자동로그인값 확인
     private void autologin(){
-        showProgressDialog();
         if(mPref.getString("switch", "").equals("1")) {
             autoLogin.setChecked(true);
+            showProgressDialog();
             Log.d("setting", "true");
         } else {
             autoLogin.setChecked(false);

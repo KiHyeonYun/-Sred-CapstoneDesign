@@ -194,7 +194,7 @@ public class RecordActivity extends AppCompatActivity {
                 }
             }
             file = Uri.fromFile(new File(getSavePath()+"/0"+ recordNumber.toString()+ ".wav"));
-            wavRef = storageRef.child(user.getUid()+"/"+file.getLastPathSegment());
+            wavRef = storageRef.child(user.getUid()+"/learning/"+file.getLastPathSegment());
             uploadTask = wavRef.putFile(file);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -241,7 +241,7 @@ public class RecordActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         recordNumber = dataSnapshot.getValue();
 
-                        if(Integer.parseInt(recordNumber.toString()) > 3){
+                        if(Integer.parseInt(recordNumber.toString()) > 49){
                             mdatabase.child("users").child(user.getUid()).child("learning").setValue("true");
                             mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("No");
 
