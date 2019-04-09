@@ -67,12 +67,6 @@ public class NormalizeWaveData {
 	}
 
 
-	/**
-	 * rawデータを、doubleの配列に変換する。<br>
-	 * 値は、-1〜1 の範囲に収まるように正規化する。
-	 * @param waveData rawデータ
-	 * @return 正規化されたデータの配列
-	 */
 	public static double[] convertWaveData(byte[] waveData) {
 		double[] result = new double[waveData.length / 2];
 		for (int index = 0; index < result.length; index++) {
@@ -81,12 +75,7 @@ public class NormalizeWaveData {
 		return result;
 	}
 
-	/**
-	 * 周波数データを表示用に、指定された個数に切り詰めます。
-	 * @param ds 周波数データ
-	 * @param count 表示数
-	 * @return 切り詰められたデータ
-	 */
+
 	public static double[][] convertPlotData(double[] ds, int count) {
 		double[][] result = new double[count][];
 		int interval = ds.length / count;
@@ -119,11 +108,7 @@ public class NormalizeWaveData {
 		return result;
 	}
 
-	/**
-	 * 周波数データをFFTした結果を正規化して返します。
-	 * @param ds 周波数データ
-	 * @return FFT後のデータ
-	 */
+
 	public static double[] convertFFT(double[] ds) {
 		Log.d(TAG, "convert FFT start: " + ds.length);
 		if (!FastFourierTransformer.isPowerOf2(ds.length)) {

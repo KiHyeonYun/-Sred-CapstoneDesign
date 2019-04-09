@@ -83,15 +83,6 @@ public class WaveDisplayView extends View implements WaveDataStore {
 				}
 			}
 		}
-		/*{
-			double[] ffts = NormalizeWaveData.convertFFT(ds);
-			float lastY = 0.0f;
-			for (int x = 0; x < width; x++) {
-				float y = height * (float)(1.0 - ffts[x]);
-				canvas.drawLine(x + margin, lastY, x+1 + margin, y, fftDataLine);
-				lastY = y;
-			}
-		}*/
 	}
 
 	private float drawWaveLine(Canvas canvas, double value, float x, float y, int height, int margin) {
