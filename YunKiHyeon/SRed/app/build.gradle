@@ -31,7 +31,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'org.kie.modules:org-apache-commons-math:6.5.0.Final'
     implementation 'com.beardedhen:androidbootstrap:2.3.2'
-
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

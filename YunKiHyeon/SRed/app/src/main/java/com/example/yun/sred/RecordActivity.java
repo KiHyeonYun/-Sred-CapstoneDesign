@@ -21,10 +21,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapText;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.beardedhen.androidbootstrap.api.view.BootstrapTextView;
 import com.example.yun.sred.audio.AudioPlayTask;
 import com.example.yun.sred.audio.MicRecordTask;
 import com.example.yun.sred.audio.NormalizeWaveData;
@@ -67,8 +70,10 @@ public class RecordActivity extends AppCompatActivity {
     private WaveDisplayView displayView;
     private ProgressBar progressBar;
     private BootstrapButton recordButton, playButton, stopButton, saveButton;
+    private TextView countText;
 
     private  Object recordNumber;
+    private int labelNumber;
     private FirebaseAuth FirebaseAuth;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mdatabase = FirebaseDatabase.getInstance().getReference();
@@ -93,7 +98,7 @@ public class RecordActivity extends AppCompatActivity {
         playButton = (BootstrapButton) findViewById(R.id.Play);
         stopButton = (BootstrapButton) findViewById(R.id.Stop);
         saveButton = (BootstrapButton) findViewById(R.id.Save);
-
+        countText = (TextView) findViewById(R.id.countText);
         configureEvnetListener();
         setInitializeState();
     }
@@ -193,7 +198,7 @@ public class RecordActivity extends AppCompatActivity {
                     targetStream.close();
                 }
             }
-            file = Uri.fromFile(new File(getSavePath()+"/0"+ recordNumber.toString()+ ".wav"));
+            file = Uri.fromFile(new File(getSavePath()+"/"+String.valueOf(labelNumber)+"_"+recordNumber.toString()+ ".wav"));
             wavRef = storageRef.child(user.getUid()+"/learning/"+file.getLastPathSegment());
             uploadTask = wavRef.putFile(file);
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -221,7 +226,7 @@ public class RecordActivity extends AppCompatActivity {
         setButtonEnable(true);
         try {
             recordTask = new MicRecordTask(progressBar, displayView, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING);
-            recordTask.setMax(10 * getDataBytesPerSecond(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING));
+            recordTask.setMax(3 * getDataBytesPerSecond(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_ENCODING));
         } catch (IllegalArgumentException ex) {
             Log.w(TAG, "Fail to create MicRecordTask.", ex);
         }
@@ -240,8 +245,12 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         recordNumber = dataSnapshot.getValue();
+                        labelNumber = Integer.parseInt(recordNumber.toString())/10;
 
-                        if(Integer.parseInt(recordNumber.toString()) > 49){
+                        if(Integer.parseInt(recordNumber.toString())%10 == 9)
+                            countText.setText(String.valueOf(labelNumber+1));
+
+                        if(Integer.parseInt(recordNumber.toString()) > 99){
                             mdatabase.child("users").child(user.getUid()).child("learning").setValue("true");
                             mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("No");
 
@@ -251,7 +260,7 @@ public class RecordActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(RecordActivity.this,recordNumber.toString(),Toast.LENGTH_LONG).show();
-                        final File file = new File(getSavePath(), "0"+ recordNumber.toString()+ ".wav");
+                        final File file = new File(getSavePath(), String.valueOf(labelNumber)+"_"+recordNumber.toString()+ ".wav");
                             saveSoundFile(file, true);
 
                         recordNumber = Integer.parseInt(recordNumber.toString())+1;

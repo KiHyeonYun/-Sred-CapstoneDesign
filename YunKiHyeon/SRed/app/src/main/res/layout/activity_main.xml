@@ -4,94 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#051219"
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.beardedhen.androidbootstrap.AwesomeTextView
-        android:id="@+id/STT_text"
-        android:paddingBottom="50px"
-        android:text="-"
-        style="@style/wrapping_fa_text"
-        app:bootstrapBrand="info"
-        />
-
-    <LinearLayout
-    android:gravity="center"
+<LinearLayout
     android:orientation="vertical"
+    android:layout_gravity="top"
+    android:layout_weight="1"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="wrap_content">
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/STT_text"
+            android:text=" "
+            style="@style/wrapping_fa_text"
+            app:bootstrapBrand="info"
+            />
+</LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:padding="20dip"
+            android:id="@+id/recordImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/record_main" />
 
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/Record_button"
-        style="@style/wrapping_button"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:layout_margin="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:padding="0dp"
-        android:text="RECORD"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="lg"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
-
-
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/stop_butt"
-        style="@style/wrapping_button"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="0dp"
-        android:padding="0dp"
-        android:text="STOP"
-        app:bootstrapBrand="danger"
-        app:bootstrapSize="lg"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
-
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ProgressBar
             android:id="@+id/progressBarMain"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
             />
-
-</LinearLayout>
-
-
-    <!--<com.beardedhen.androidbootstrap.BootstrapButton-->
-        <!--android:id="@+id/STT_button"-->
-        <!--style="@style/wrapping_button"-->
-        <!--android:layout_margin="0dp"-->
-        <!--android:layout_marginLeft="0dp"-->
-        <!--android:layout_marginRight="0dp"-->
-        <!--android:padding="0dp"-->
-        <!--android:text="R U N"-->
-        <!--app:bootstrapBrand="success"-->
-        <!--app:bootstrapSize="lg"-->
-        <!--app:buttonMode="regular"-->
-        <!--app:roundedCorners="true"-->
-        <!--app:showOutline="false" />-->
-
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/aiSpeaker"
-        style="@style/wrapping_button"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:gravity="center"
-        android:padding="0dp"
-        android:text="AI Speaker OFF"
-        app:bootstrapBrand="primary"
-        app:bootstrapSize="lg"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
+    </LinearLayout>
 </android.widget.LinearLayout>

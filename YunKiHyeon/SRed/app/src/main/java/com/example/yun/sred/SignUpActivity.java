@@ -63,7 +63,6 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                //푸쉬알람을 할 때 이름이 뜨게 담아두는코드.
                                 final String uid = task.getResult().getUser().getUid();
                                 UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name.getText().toString()).build();
                                 task.getResult().getUser().updateProfile(userProfileChangeRequest);

@@ -115,7 +115,7 @@ public class LoginActivity extends BaseDialog {
                     if (user.isEmailVerified() == true) {
                         if(autoLogin.isChecked()){
                             Toast.makeText(getApplicationContext(),user.getDisplayName()+"님 환영합니다.",Toast.LENGTH_SHORT).show();
-                            tutorialCheck();
+                            recordCkeck();
                         }
                     }
                     else { }
@@ -146,7 +146,7 @@ public class LoginActivity extends BaseDialog {
                                         if (user.isEmailVerified() == true) {
                                             Toast.makeText(getApplicationContext(),user.getDisplayName()+"님 환영합니다.",Toast.LENGTH_SHORT).show();
                                             //작업중
-                                            tutorialCheck();
+                                            recordCkeck();
 
 
                                         } else if (user.isEmailVerified() == false) {
@@ -216,8 +216,8 @@ public class LoginActivity extends BaseDialog {
         }
     }
 
-    //음성데이터 저장 확인 메소드
-    private boolean tutorialCheck(){
+
+    private boolean recordCkeck(){
         final boolean result = false;
 
         //DB에서 user -> uid -> NewUser를 찾고 한번만 이벤트를 발생시켜서 데이터를 가지고옴.  singlevalueEvent로 해야 1번만 불러옴.
@@ -229,7 +229,7 @@ public class LoginActivity extends BaseDialog {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "튜토리얼?  :  "+dataSnapshot.getValue());
+                Log.i(TAG, "recordCkeck  :  "+dataSnapshot.getValue());
 
                 if(dataSnapshot.getValue().equals("yes")) {
                     Intent intent_r = new Intent(LoginActivity.this, RecordActivity.class);

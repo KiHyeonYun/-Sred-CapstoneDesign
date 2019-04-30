@@ -21,13 +21,13 @@ public class WaveFileHeaderCreator {
 		target.write("RIFF".getBytes());
 		pushInt(target, size + 36);
 		target.write("WAVEfmt ".getBytes());
-		pushInt(target, (is8bit ? 8 : 16));		// fmtチャンクのバイト数
-		pushShort(target, 1);					// フォーマットID 1 =リニアPCM
-		pushShort(target, isMonoChannel ? 1 : 2);	// チャンネル数
-		pushInt(target, sampleRate);			// サンプルレート
-		pushInt(target, sampleRate * (isMonoChannel ? 1 : 2) * (is8bit ? 1 : 2));	// バイト/秒
-		pushShort(target, (isMonoChannel ? 1 : 2) * (is8bit ? 1 : 2));		// ブロックサイズ
-		pushShort(target, is8bit ? 8 : 16);		// サンプルあたりのビット数
+		pushInt(target, (is8bit ? 8 : 16));
+		pushShort(target, 1);
+		pushShort(target, isMonoChannel ? 1 : 2);
+		pushInt(target, sampleRate);
+		pushInt(target, sampleRate * (isMonoChannel ? 1 : 2) * (is8bit ? 1 : 2));
+		pushShort(target, (isMonoChannel ? 1 : 2) * (is8bit ? 1 : 2));
+		pushShort(target, is8bit ? 8 : 16);
 		target.write("data".getBytes());
 		pushInt(target, size);
 	}

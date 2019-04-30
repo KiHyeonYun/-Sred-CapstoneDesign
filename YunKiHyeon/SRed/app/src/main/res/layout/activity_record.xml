@@ -16,7 +16,17 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:id="@+id/displayView"
-            android:padding="1dip"></LinearLayout>
+            android:padding="1dip">
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/countText"
+                android:layout_gravity="right"
+                android:text="---"
+                style="@style/wrapping_fa_text"
+                app:bootstrapBrand="info"
+                />
+
+        </LinearLayout>
 
         <ProgressBar
             android:layout_height="wrap_content"
