@@ -160,7 +160,7 @@ public class RecordActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopAll();
+               // stopAll();
             }
         });
 
@@ -337,6 +337,7 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         setButtonEnable(false);
+                        stopRecording();
                     }
                 });
             }
