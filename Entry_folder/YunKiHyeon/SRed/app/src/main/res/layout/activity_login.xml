@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_marginBottom="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/main_logo" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/LoginActivity_email"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/LoginActivity_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/LoginActivity_button_login"
+            style="@style/wrapping_button"
+            android:text="Sign In"
+            app:bootstrapBrand="primary"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            app:roundedCorners="false"
+            app:bootstrapSize="lg"
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/LoginActivity_button_signup"
+            style="@style/wrapping_button"
+            android:text="Sign Up"
+            app:bootstrapBrand="primary"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            app:roundedCorners="false"
+            app:bootstrapSize="lg"
+            />
+    </LinearLayout>
+
+    <Switch
+        android:layout_marginTop="20dp"
+        android:id="@+id/auto_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자동로그인" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/loginactivity_button_REverity"
+        style="@style/wrapping_button"
+        android:text="재전송"
+        app:bootstrapBrand="success"
+        app:buttonMode="regular"
+        app:showOutline="false"
+        app:roundedCorners="false"
+        app:bootstrapSize="lg"
+        />
+
+</LinearLayout>
