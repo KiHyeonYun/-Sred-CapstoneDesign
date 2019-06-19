@@ -1,0 +1,6 @@
+model_checkpoint_path: "sred_model-400"
+all_model_checkpoint_paths: "sred_model-0"
+all_model_checkpoint_paths: "sred_model-100"
+all_model_checkpoint_paths: "sred_model-200"
+all_model_checkpoint_paths: "sred_model-300"
+all_model_checkpoint_paths: "sred_model-400"
