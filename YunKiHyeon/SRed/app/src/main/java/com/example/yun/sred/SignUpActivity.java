@@ -75,7 +75,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 userModel.result ="";
                                 userModel.using="false";
                                 userModel.learning = "false";
-
+                                userModel.feedback = "0";
+                                userModel.mode="temp";
                                 FirebaseDatabase.getInstance().getReference().child("users").child(uid).setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
 
                                     @Override

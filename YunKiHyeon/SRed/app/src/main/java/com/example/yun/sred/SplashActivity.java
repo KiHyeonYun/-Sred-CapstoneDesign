@@ -34,17 +34,15 @@ public class SplashActivity extends AppCompatActivity {
 
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
         }
         else{
             Toast.makeText(this, "권한을 허용해 주세요.", Toast.LENGTH_LONG).show();
+           finish();
         }
-
-
-
     }
 }
 

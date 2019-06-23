@@ -10,5 +10,6 @@ public class UserModel {
     public String using;
     public String result;
     public String NewUser;
-
+    public String feedback;
+    public String mode;
 }

@@ -245,12 +245,15 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         recordNumber = dataSnapshot.getValue();
-                        labelNumber = Integer.parseInt(recordNumber.toString())/10;
+                        labelNumber = Integer.parseInt(recordNumber.toString())/50;
 
                         if(Integer.parseInt(recordNumber.toString())%10 == 9)
                             countText.setText(String.valueOf(labelNumber+1));
+                        else
+                            countText.setText(String.valueOf(labelNumber));
 
-                        if(Integer.parseInt(recordNumber.toString()) > 99){
+
+                        if(Integer.parseInt(recordNumber.toString()) > 498){
                             mdatabase.child("users").child(user.getUid()).child("learning").setValue("true");
                             mdatabase.child("users").child(user.getUid()).child("NewUser").setValue("No");
 

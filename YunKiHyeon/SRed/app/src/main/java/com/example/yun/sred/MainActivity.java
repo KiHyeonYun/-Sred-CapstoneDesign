@@ -1,7 +1,9 @@
 package com.example.yun.sred;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioFormat;
@@ -15,6 +17,8 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,9 +26,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +75,13 @@ public class MainActivity extends BaseDialog {
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_CONFIGURATION_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
+    //플로팅 버튼 & 스위치
+    private Animation fa_open, fa_close;
+    private Boolean isFaOpen = false;
+    private FloatingActionButton fa_main, fa_feedback, fa_logout;
+    private Switch switch_dt;
+    private boolean sdt;
+
     private boolean toggleView =true;
     private MicRecordTask recordTask;
     private AlertDialog saveDialog;
@@ -92,19 +107,58 @@ public class MainActivity extends BaseDialog {
         TypefaceProvider.registerDefaultIconSets();
 
         setContentView(R.layout.activity_main);
+        fa_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fa_open);
+        fa_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fa_close);
+
+        fa_main = (FloatingActionButton) findViewById(R.id.fa_main);
+        fa_logout = (FloatingActionButton) findViewById(R.id.fa_logout);
+        fa_feedback = (FloatingActionButton) findViewById(R.id.fa_feedback);
 
         recordImageView = findViewById(R.id.recordImageView);
         progressBar = (ProgressBar) findViewById(R.id.progressBarMain);
         displayView = new WaveDisplayView(getBaseContext());
-
         recordImageView.setImageResource(R.drawable.record_main);
-
+        switch_dt = findViewById(R.id.switch_dt);
+        switch_dt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    mdatabase.child("users").child(user.getUid()).child("mode").setValue("temp");
+                }
+                else
+                    mdatabase.child("users").child(user.getUid()).child("mode").setValue("deep");
+            }
+        });
 
         ttsText = findViewById(R.id.STT_text);
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 tts.setLanguage(Locale.KOREAN);
+            }
+        });
+
+        //플로팅 리스너
+        fa_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+            }
+        });
+        fa_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        fa_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+                showMessage();
             }
         });
 
@@ -188,7 +242,6 @@ public class MainActivity extends BaseDialog {
         }
         super.onPause();
     }
-
     private boolean saveSoundFile (File savefile,boolean isWavFile){
 
         Uri file;
@@ -232,7 +285,11 @@ public class MainActivity extends BaseDialog {
                             .child("users")
                             .child(user.getUid())
                             .child("using").setValue("true");
-                    mdatabase.child("users").child(user.getUid()).child("result").setValue(" ");
+                    mdatabase.child("users").child(user.getUid()).child("result").setValue("");
+//                    if(switch_dt.isChecked()) {
+//                       // Toast.makeText(MainActivity.this,mdatabase.child("users").child(user.getUid()).child("recordNumber").toString(),Toast.LENGTH_SHORT).show();
+//                        mdatabase.child("users").child(user.getUid()).child("mode").setValue("deep");
+//                    }
                     Toast.makeText(MainActivity.this, "FileUpload Success", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -243,8 +300,6 @@ public class MainActivity extends BaseDialog {
         }
 
     }
-
-
     private void startRecording () {
         Log.i(TAG, "start recording.");
         setButtonEnable(true);
@@ -278,20 +333,15 @@ public class MainActivity extends BaseDialog {
         }
         setButtonEnable(false);
     }
-
-
     private void stopAll () {
         if (recordTask != null && recordTask.isRunning()) {
             stopRecording();
         }
     }
-
     private void setButtonEnable ( boolean b){
         recordImageView.setEnabled(!b);
 //            stop_butt.setEnabled(b);
     }
-
-
     private void waitEndTask ( final Thread t){
         final Handler handler = new Handler();
         new Thread(new Runnable() {
@@ -338,4 +388,57 @@ public class MainActivity extends BaseDialog {
         boolean isMonoChannel = channelConfig != AudioFormat.CHANNEL_CONFIGURATION_STEREO;
         return sampleRate * (isMonoChannel ? 1 : 2) * (is8bit ? 1 : 2);
     }
+
+    //플로팅 버튼, 스위치
+    public void anim() {
+
+        if (isFaOpen) {
+            fa_logout.startAnimation(fa_close);
+            fa_feedback.startAnimation(fa_close);
+            fa_logout.setClickable(false);
+            fa_feedback.setClickable(false);
+            isFaOpen = false;
+        } else {
+            fa_logout.startAnimation(fa_open);
+            fa_feedback.startAnimation(fa_open);
+            fa_logout.setClickable(true);
+            fa_feedback.setClickable(true);
+            isFaOpen = true;
+        }
+    }
+
+    public void showMessage(){
+        final CharSequence[] items = {"거실 불 켜","거실 불 꺼","안방 불 켜줘","안방 불 꺼줘","화장실 불 켜줘","화장실 불 꺼줘","TV 채널 올려줘","TV 채널 내려줘","현관문 열어줘","오늘 날씨 어때?",};
+        final int selectIndex;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("피드백 해주세요")
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final int index =which;
+                        mdatabase.child("users").child(user.getUid()).child("recordNumber").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Object recordNumber = dataSnapshot.getValue();
+                                Integer labelNumber = Integer.parseInt(recordNumber.toString());
+                                labelNumber++;
+                                mdatabase.child("users").child(user.getUid()).child("recordNumber").setValue(labelNumber.toString());
+                                mdatabase.child("users").child(user.getUid()).child("feedback").setValue(String.valueOf(index)+"_"+labelNumber.toString());
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        }
+                });
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
