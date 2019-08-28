@@ -1,0 +1,9 @@
+sox using.wav -n noiseprof noise.prof
+
+sox using.wav using-clean.wav noisered noise.prof 0.2
+
+for file in ./*.wav
+do
+	outfile=${file%.*}
+	sox "${outfile}".wav -n spectrogram -x 100 -y 100 -r -o "${outfile}".png
+done

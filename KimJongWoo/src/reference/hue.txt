@@ -1,0 +1,3 @@
+http://192.168.0.36/api/ffUr3gaCIVVYLUNqsmDyOew3Rq-dzB-xh2NwKxDR/lights
+
+"username":"ffUr3gaCIVVYLUNqsmDyOew3Rq-dzB-xh2NwKxDR"
