@@ -1,16 +1,10 @@
-/**
- *
- */
 package com.example.yun.sred.audio;
 
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.widget.ProgressBar;
 
-/**
- * @author horiuchi
- *
- */
+
 public class MicRecordTask extends StopableTask {
 
 	private final WaveDataStore store;

@@ -37,9 +37,7 @@ public class LoginActivity extends BaseDialog {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authStateListener;
-
-
-    //자동로그인에 필요함
+    //자동로그인에 필요
     private SharedPreferences mPref;
     private SharedPreferences.Editor mPrefEdit;
 
@@ -77,7 +75,6 @@ public class LoginActivity extends BaseDialog {
                 loginEvent();
             }
         });
-
         //메일인증상태가 아닐 시 재전송 버튼을 활성화시켜줌.
         re_verify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +82,6 @@ public class LoginActivity extends BaseDialog {
                 sendEmailVerification();
             }
         });
-
         //자동로그인 버튼의 상태가 바뀌면 동작하는 리스너
         autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -102,10 +98,6 @@ public class LoginActivity extends BaseDialog {
                 }
             }
         });
-        //자동로그인
-        autologin();
-
-
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -170,7 +162,6 @@ public class LoginActivity extends BaseDialog {
         }
         //로그인 인터페이스 리스너 생성
     }
-
     //인증메일 재전송 메소드
     private void sendEmailVerification() {
 
@@ -190,14 +181,11 @@ public class LoginActivity extends BaseDialog {
             }
         });
     }
-
-    //스타트하면
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authStateListener);
     }
-    //정지하면
     @Override
     protected void onStop() {
         super.onStop();
@@ -205,18 +193,23 @@ public class LoginActivity extends BaseDialog {
         hideProgressDialog();
     }
     //자동로그인값 확인
-    private void autologin(){
-        if(mPref.getString("switch", "").equals("1")) {
-            autoLogin.setChecked(true);
-            showProgressDialog();
-            Log.d("setting", "true");
-        } else {
-            autoLogin.setChecked(false);
-            Log.d("setting", "false");
+    private void autologinCkeck(){
+        Intent intent = getIntent();
+        String checkedActivity = intent.getExtras().getString("activityName");
+        if(checkedActivity.equals("main")) {
+            mPrefEdit.putString("switch", "1");
+            mPrefEdit.commit();
+        }else {
+            if (mPref.getString("switch", "").equals("1")) {
+                autoLogin.setChecked(true);
+                showProgressDialog();
+                Log.d("setting", "true");
+            } else {
+                autoLogin.setChecked(false);
+                Log.d("setting", "false");
+            }
         }
     }
-
-
     private boolean recordCkeck(){
         final boolean result = false;
 

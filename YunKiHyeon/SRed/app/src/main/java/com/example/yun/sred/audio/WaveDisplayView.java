@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.example.yun.sred.audio;
 
 import android.content.Context;
@@ -11,10 +8,6 @@ import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * @author horiuchihiroki
- *
- */
 public class WaveDisplayView extends View implements WaveDataStore {
 
 	private final Handler handler;

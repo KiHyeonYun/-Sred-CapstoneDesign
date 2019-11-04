@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.example.yun.sred.audio;
 
 import android.media.AudioFormat;
@@ -8,9 +5,6 @@ import android.media.AudioFormat;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * via http://www.kk.iij4u.or.jp/~kondo/wave/index.html
- */
 public class WaveFileHeaderCreator {
 
 	public static void pushWaveHeader(OutputStream target,

@@ -80,7 +80,6 @@ public class RecordActivity extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
 
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -356,7 +355,6 @@ public class RecordActivity extends AppCompatActivity {
         if (hasSDCard()) {
 
             File path = new File(Environment.getExternalStorageDirectory(), "download/VoiceChanger/");
-            //File path = new File(Environment.getExternalStorageDirectory(), "download/VoiceChanger/");
             path.mkdirs();
             return path;
         } else {

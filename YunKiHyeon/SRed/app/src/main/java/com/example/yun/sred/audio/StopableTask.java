@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.example.yun.sred.audio;
 
 import android.os.Handler;
@@ -8,10 +5,6 @@ import android.widget.ProgressBar;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @author horiuchi
- *
- */
 public class StopableTask extends Thread {
 
 	private final Handler handler = new Handler();
